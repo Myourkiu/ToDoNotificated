@@ -1,13 +1,14 @@
-import { ScreenContent } from 'components/ScreenContent';
-import { StatusBar } from 'expo-status-bar';
-
+import { NavigationContainer } from '@react-navigation/native';
 import './global.css';
-
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import Home from '~/pages/home';
+const Tab = createBottomTabNavigator()
 export default function App() {
   return (
-    <>
-      <ScreenContent title="Home" path="App.tsx"></ScreenContent>
-      <StatusBar style="auto" />
-    </>
+    <NavigationContainer>
+      <Tab.Navigator screenOptions={{headerShown: false}}>
+        <Tab.Screen name='Home' component={Home} />
+      </Tab.Navigator>
+    </NavigationContainer>
   );
 }
