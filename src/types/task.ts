@@ -1,5 +1,5 @@
 export interface Task {
     name: string,
-    averageEndTime: string,
+    averageEndTime: Date,
     done: boolean
 }

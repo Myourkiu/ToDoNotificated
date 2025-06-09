@@ -1,23 +1,25 @@
-import { FlatList, Text, View } from "react-native"
-import { Checkbox } from "react-native-paper"
-import { Task } from "~/types/task"
+import { FlatList, Text, View } from 'react-native';
+import { Checkbox } from 'react-native-paper';
+import { Task } from '~/types/task';
 
 interface TaskListProps {
-    toggleTask: (index:number) => void,
-    tasks: Task[]
+  toggleTask: (index: number) => void;
+  tasks: Task[];
 }
-const TaskList = ({toggleTask, tasks} : TaskListProps) => {
+const TaskList = ({ toggleTask, tasks }: TaskListProps) => {
   return (
     <>
-    <FlatList className="w-full"
+      <FlatList
+        className="w-full"
         data={tasks}
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item, index }) => (
-          <View className="flex-row items-center justify-between mb-4">
+          <View className="mb-4 flex-row items-center justify-between">
             <View>
               <Text className="text-lg text-white">{item.name}</Text>
-              <Text className="text-gray-500 text-sm">
-                Horário de término: {item.averageEndTime}
+              <Text className="text-sm text-gray-500">
+                Horário de término:{' '}
+                {item.averageEndTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
               </Text>
             </View>
             <Checkbox
@@ -28,8 +30,7 @@ const TaskList = ({toggleTask, tasks} : TaskListProps) => {
         )}
       />
     </>
+  );
+};
 
-  )
-}
-
-export default TaskList
+export default TaskList;
