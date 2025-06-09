@@ -11,7 +11,7 @@ export default function App() {
         screenOptions={{
           headerShown: false,
           tabBarStyle: {
-            backgroundColor: '#202020',
+            backgroundColor: '#1f1f1f',
             borderTopWidth: 0,
           },
           tabBarActiveTintColor: '#6a2ec9',

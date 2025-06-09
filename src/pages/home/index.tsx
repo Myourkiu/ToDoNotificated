@@ -21,6 +21,7 @@ const Home = () => {
     <>
       <StatusBar hidden />
       <SafeAreaView className="flex-1 bg-[#272727]">
+      <SafeAreaView className="flex-1 bg-[#202020]">
         <View className="mt-16 px-4">
           <Text className="text-3xl mb-8 font-semibold text-white">Minhas Tasks</Text>
           <View >
