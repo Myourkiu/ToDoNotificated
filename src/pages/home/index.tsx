@@ -5,6 +5,7 @@ import { Task } from '~/types/task';
 import TaskList from './components/TaskList';
 import CreateTaskModal from './components/CreateTaskModal';
 import { PlusIcon } from 'lucide-react-native';
+import { createTaskFormData } from '~/types/schemas/createTask';
 
 const Home = () => {
   const [tasks, setTasks] = useState<Task[]>([
@@ -20,8 +21,8 @@ const Home = () => {
     setTasks(updatedTasks);
   };
 
-  const onCreateTask = (name: string, endTime: Date) => {
-    const newTask: Task = {name: name, averageEndTime: endTime, done: false};
+  const onCreateTask = (data: createTaskFormData) => {
+    const newTask: Task = {name: data.name, averageEndTime: data.endTime, done: false};
 
     setTasks([...tasks, newTask])
     setCreateModalOpen(false)
