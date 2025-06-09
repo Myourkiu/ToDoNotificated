@@ -19,7 +19,7 @@ const TaskList = ({ toggleTask, tasks }: TaskListProps) => {
               <Text className="text-lg text-white">{item.name}</Text>
               <Text className="text-sm text-gray-500">
                 Horário de término:{' '}
-                {item.averageEndTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                {item.averageEndTime.toLocaleTimeString(['pt-BR'], { hour: '2-digit', minute: '2-digit' })}
               </Text>
             </View>
             <Checkbox
