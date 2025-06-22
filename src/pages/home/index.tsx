@@ -3,8 +3,7 @@ import { useState } from 'react';
 import { SafeAreaView, Text, TouchableOpacity, View } from 'react-native';
 import { Task } from '~/types/task';
 import TaskList from './components/TaskList';
-import CreateTaskModal from './components/CreateTaskModal';
-import { PlusIcon } from 'lucide-react-native';
+// import CreateTaskModal from './components/CreateTaskModal';
 import { createTaskFormData } from '~/types/schemas/createTask';
 
 const Home = () => {
@@ -36,14 +35,14 @@ const Home = () => {
           <View className='w-full flex-row items-center justify-between mb-8'>
             <Text className=" text-3xl font-semibold text-white">Minhas Tasks</Text>
             <TouchableOpacity className='rounded-full' onPress={() => setCreateModalOpen(true)}>
-              <PlusIcon color={'#6a2ec9'}/>
+              {/* <PlusIcon color={'#6a2ec9'}/> */}
             </TouchableOpacity>
           </View>
           <View>
             <TaskList toggleTask={toggleTask} tasks={tasks} />
           </View>
         </View>
-        <CreateTaskModal isOpen={createModalOpen} onClose={() => setCreateModalOpen(false)} onCreateTask={onCreateTask}/>
+        {/* <CreateTaskModal isOpen={createModalOpen} onClose={() => setCreateModalOpen(false)} onCreateTask={onCreateTask}/> */}
       </SafeAreaView>
     </>
   );

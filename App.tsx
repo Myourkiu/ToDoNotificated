@@ -2,7 +2,6 @@ import { NavigationContainer } from '@react-navigation/native';
 import './global.css';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Home from '~/pages/home';
-import { HomeIcon } from 'lucide-react-native';
 const Tab = createBottomTabNavigator();
 export default function App() {
   return (
@@ -20,7 +19,7 @@ export default function App() {
           name="Home"
           component={Home}
           options={{
-            tabBarIcon: ({ color, size }) => <HomeIcon color={color} size={size} />,
+            // tabBarIcon: ({ color, size }) => <HomeIcon color={color} size={size} />,
           }}
         />
       </Tab.Navigator>
