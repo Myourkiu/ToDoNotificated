@@ -1,5 +1,5 @@
 import { FlatList, Text, View } from 'react-native';
-// import { Checkbox } from 'react-native-paper';
+import { Checkbox } from 'react-native-paper';
 import { Task } from '~/types/task';
 
 interface TaskListProps {
@@ -22,10 +22,10 @@ const TaskList = ({ toggleTask, tasks }: TaskListProps) => {
                 {item.averageEndTime.toLocaleTimeString(['pt-BR'], { hour: '2-digit', minute: '2-digit' })}
               </Text>
             </View>
-            {/* <Checkbox
+            <Checkbox
               status={item.done ? 'checked' : 'unchecked'}
               onPress={() => toggleTask(index)}
-            /> */}
+            />
           </View>
         )}
       />
