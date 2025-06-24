@@ -72,7 +72,7 @@ const Home = () => {
           title: 'Task urgente!',
           body: `A task "${task.name}" está próxima do prazo limite!`,
         },
-        trigger: { type: 'timeInterval', seconds: 1, repeats: false },
+        trigger: { type: Notifications.SchedulableTriggerInputTypes.TIME_INTERVAL, seconds: 1, repeats: false },
       });
     } else {
       await Notifications.scheduleNotificationAsync({
@@ -80,7 +80,7 @@ const Home = () => {
           title: 'Task prestes a atrasar!',
           body: `A task "${task.name}" tem 30 minutos para ser concluída!`,
         },
-        trigger: { type: 'date', date: notificationTime, repeats: false },
+        trigger: { type: Notifications.SchedulableTriggerInputTypes.DATE, date: notificationTime },
       });
     }
   };
