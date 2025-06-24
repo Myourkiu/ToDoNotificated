@@ -18,11 +18,12 @@ export const InitializeNotifications = async () => {
   }
 
   Notifications.setNotificationHandler({
-    //@ts-ignore
     handleNotification: async () => ({
-      shouldShowAlert: true,
       shouldPlaySound: true,
       shouldSetBadge: true,
+      shouldShowBanner: true,
+      shouldShowList: true,
+      priority: Notifications.AndroidNotificationPriority.HIGH
     }),
   });
 };
