@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { SafeAreaView, Text, TouchableOpacity, View } from 'react-native';
 import { Task } from '~/types/task';
 import TaskList from './components/TaskList';
@@ -8,9 +8,14 @@ import CreateTaskModal from './components/CreateTaskModal';
 import { InitializeNotifications } from '~/lib';
 import * as Notifications from 'expo-notifications';
 
-InitializeNotifications();
-
 const Home = () => {
+  useEffect(() => {
+    const setup = async () => {
+      await InitializeNotifications();
+    };
+
+    setup();
+  }, []);
   const [tasks, setTasks] = useState<Task[]>([
     { name: 'Estudar React', averageEndTime: new Date(), done: false },
     { name: 'Fazer exercício', averageEndTime: new Date(), done: true },
@@ -24,54 +29,61 @@ const Home = () => {
     setTasks(updatedTasks);
   };
 
-  const onCreateTask = (data: createTaskFormData) => {
-  const newTask: Task = { name: data.name, averageEndTime: data.endTime, done: false };
+  const onCreateTask = async (data: createTaskFormData) => {
+    const endTime = new Date(data.endTime);
 
-  setTasks([...tasks, newTask]);
-  setCreateModalOpen(false);
-  scheduleNotification(newTask);
-};
+    if (isNaN(endTime.getTime())) {
+      console.error('Data inválida fornecida ao criar a task:', data.endTime);
+      return;
+    }
 
-const scheduleNotification = async (task: Task) => {
-  const now = new Date();
-  
-  // Garantir que a data seja criada corretamente
-  let taskEndTime;
-  if (typeof task.averageEndTime === 'string') {
-    taskEndTime = new Date(task.averageEndTime);
-  } else {
-    taskEndTime = task.averageEndTime;
-  }
-  
-  // Verificar se a data é válida
-  if (isNaN(taskEndTime.getTime())) {
-    console.error('Data inválida:', task.averageEndTime);
-    return;
-  }
-  
-  const notificationTime = new Date(taskEndTime.getTime() - 30 * 60 * 1000);
-  
+    const newTask: Task = {
+      name: data.name,
+      averageEndTime: endTime,
+      done: false,
+    };
 
-  if (notificationTime <= now) {
-    Notifications.scheduleNotificationAsync({
-      content: { 
-        title: 'Task urgente!', 
-        body: `A task "${task.name}" está próxima do prazo limite!` 
-      },
-      trigger: { seconds: 1 },
-    });
-  } else {
-    const secondsUntilNotification = Math.floor((notificationTime.getTime() - now.getTime()) / 1000);
-    
-    Notifications.scheduleNotificationAsync({
-      content: { 
-        title: 'Task prestes a atrasar!', 
-        body: `A task "${task.name}" tem 30 minutos para ser concluída!` 
-      },
-      trigger: { seconds: secondsUntilNotification },
-    });
-  }
-};
+    setTasks((prev) => [...prev, newTask]);
+    setCreateModalOpen(false);
+    await scheduleNotification(newTask);
+  };
+
+  const scheduleNotification = async (task: Task) => {
+    const now = new Date();
+
+    let taskEndTime: Date;
+    if (typeof task.averageEndTime === 'string') {
+      taskEndTime = new Date(task.averageEndTime);
+    } else {
+      taskEndTime = task.averageEndTime;
+    }
+
+    console.log('Agora (now):', now.toISOString());
+    console.log('TaskEndTime:', taskEndTime.toISOString());
+
+    const notificationTime = new Date(taskEndTime.getTime() - 30 * 60 * 1000);
+
+    const diffMs = notificationTime.getTime() - now.getTime();
+
+    if (diffMs <= 0) {
+      console.log('Horario da notificação já passou, notificando imediatamente');
+      await Notifications.scheduleNotificationAsync({
+        content: {
+          title: 'Task urgente!',
+          body: `A task "${task.name}" está próxima do prazo limite!`,
+        },
+        trigger: { type: 'timeInterval', seconds: 1, repeats: false },
+      });
+    } else {
+      await Notifications.scheduleNotificationAsync({
+        content: {
+          title: 'Task prestes a atrasar!',
+          body: `A task "${task.name}" tem 30 minutos para ser concluída!`,
+        },
+        trigger: { type: 'date', date: notificationTime, repeats: false },
+      });
+    }
+  };
 
   return (
     <>
@@ -80,7 +92,9 @@ const scheduleNotification = async (task: Task) => {
         <View className="mt-16 px-4">
           <View className="mb-8 w-full flex-row items-center justify-between">
             <Text className=" text-3xl font-semibold text-white">Minhas Tasks</Text>
-            <TouchableOpacity className="rounded-full" onPress={() => setCreateModalOpen(true)}>
+            <TouchableOpacity
+              className="rounded-full"
+              onPress={() => setCreateModalOpen(true)}>
               <Text className="text-3xl text-[#6a2ec9]">+</Text>
             </TouchableOpacity>
           </View>

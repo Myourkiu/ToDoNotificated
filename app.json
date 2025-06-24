@@ -30,6 +30,11 @@
         "backgroundColor": "#ffffff"
       },
       "package": "com.myourkiu.ToDoNotificated"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "ba55e4cd-c371-4597-9a3c-6201688a654d"
+      }
     }
   }
 }

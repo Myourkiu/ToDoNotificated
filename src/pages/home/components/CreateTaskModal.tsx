@@ -30,9 +30,25 @@ const CreateTaskModal = ({ isOpen, onClose, onCreateTask }: Props) => {
     },
   });
 
-  const onTimeChange = (_: any, date?: Date) => {
+  const onTimeChange = (_: any, selectedTime?: Date) => {
     setShowPicker(false);
-    if (date) setValue('endTime', date, { shouldValidate: true });
+
+    if (selectedTime) {
+      const now = new Date();
+      const adjustedDate = new Date(now);
+
+      adjustedDate.setHours(selectedTime.getHours());
+      adjustedDate.setMinutes(selectedTime.getMinutes());
+      adjustedDate.setSeconds(0);
+      adjustedDate.setMilliseconds(0);
+
+      // Se o horário já passou hoje, agenda para amanhã
+      if (adjustedDate <= now) {
+        adjustedDate.setDate(adjustedDate.getDate() + 1);
+      }
+
+      setValue('endTime', adjustedDate, { shouldValidate: true });
+    }
   };
 
   const formatTime = (date: Date) =>
