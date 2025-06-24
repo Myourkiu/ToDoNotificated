@@ -16,11 +16,7 @@ const Home = () => {
 
     setup();
   }, []);
-  const [tasks, setTasks] = useState<Task[]>([
-    { name: 'Estudar React', averageEndTime: new Date(), done: false },
-    { name: 'Fazer exercício', averageEndTime: new Date(), done: true },
-    { name: 'Ler livro', averageEndTime: new Date(), done: false },
-  ]);
+  const [tasks, setTasks] = useState<Task[]>([]);
   const [createModalOpen, setCreateModalOpen] = useState<boolean>(false);
 
   const toggleTask = (index: number) => {
@@ -72,7 +68,11 @@ const Home = () => {
           title: 'Task urgente!',
           body: `A task "${task.name}" está próxima do prazo limite!`,
         },
-        trigger: { type: Notifications.SchedulableTriggerInputTypes.TIME_INTERVAL, seconds: 1, repeats: false },
+        trigger: {
+          type: Notifications.SchedulableTriggerInputTypes.TIME_INTERVAL,
+          seconds: 1,
+          repeats: false,
+        },
       });
     } else {
       await Notifications.scheduleNotificationAsync({
@@ -92,9 +92,7 @@ const Home = () => {
         <View className="mt-16 px-4">
           <View className="mb-8 w-full flex-row items-center justify-between">
             <Text className=" text-3xl font-semibold text-white">Minhas Tasks</Text>
-            <TouchableOpacity
-              className="rounded-full"
-              onPress={() => setCreateModalOpen(true)}>
+            <TouchableOpacity className="rounded-full" onPress={() => setCreateModalOpen(true)}>
               <Text className="text-3xl text-[#6a2ec9]">+</Text>
             </TouchableOpacity>
           </View>
